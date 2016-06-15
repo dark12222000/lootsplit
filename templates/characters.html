@@ -1,0 +1,26 @@
+<div class="row">
+  <div class="col-md-4">
+    <ul class="list-group">
+      <li ng-click="selectCharacter(character.name)" ng-repeat="character in characters" ng-class="{'active':(activeCharacter.name === character.name) && editing }"class="list-group-item">{{character.name}}<i ng-if="character.playerName">&nbsp;{{character.playerName}}</i></li>
+    </ul>
+  </div>
+  <div class="col-md-8">
+    <form ng-submit="characterFormSubmit()">
+      <div class="form-group">
+        <label for="characterName">Character Name</label>
+        <input type="text" class="form-control" name="characterName" placeholder="Character Name" ng-model="activeCharacter.name" id="characterName" required>
+      </div>
+      <div class="form-group">
+        <label for="playerName">Player Name</label>
+        <input type="text" class="form-control" name="playerName" placeholder="Player Name" ng-model="activeCharacter.player" id="playerName">
+      </div>
+      <div class="form-group">
+        <label for="notes">Notes</label>
+        <textarea class="form-control" name="notes" placeholder="Notes" ng-model="activeCharacter.notes" id="notes"></textarea>
+      </div>
+      <button ng-show="editing" type="button" ng-click="removeCharacter()" class="btn btn-default pull-left">Remove</button>
+      <button ng-hide="editing" type="submit" class="btn btn-default pull-right">Add</button>
+      <button ng-show="editing" type="submit" class="btn btn-default pull-right">Update</button>
+    </form>
+  </div>
+</div>

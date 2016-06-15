@@ -1,0 +1,6 @@
+.loot-pile {
+  height: 40vh;
+  min-height: 40vh;
+  max-height: 40vh;
+  overflow-y: scroll;
+}
