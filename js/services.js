@@ -22,18 +22,18 @@ angular.module('lootsplit')
     var coins = {};
     total = Number(total);
 
-    if(options.allowPP){
-      coins.pp = Math.floor(total/10);
-      total = total - (coins.pp * 10);
-    }
+    // if(options.allowPP){
+    //   coins.pp = Math.floor(total/10);
+    //   total = total - (coins.pp * 10);
+    // }
 
     coins.gp = Math.floor(total);
     total = total - coins.gp;
 
-    if(options.allowEP){
-      coins.ep = Math.floor(total/0.5);
-      total = total - (coins.ep * 0.5);
-    }
+    // if(options.allowEP){
+    //   coins.ep = Math.floor(total/0.5);
+    //   total = total - (coins.ep * 0.5);
+    // }
 
     coins.sp = Math.floor(total/0.1);
     total = total - (coins.sp * 0.1);
@@ -47,11 +47,13 @@ angular.module('lootsplit')
 .service('LootService', function($rootScope){
   var self = this;
 
-  this.lootPile = [];
-  this.characters = {};
+  this.lootPile = [{name: 'Gem', value: 50, id:'gem_01'}];
+  this.characters = {'bob': {name: 'Bob', loot: []}};
 
   this.lootTotal = 0;
   this.characterTotals = {};
+
+  this.lootPerChar = 0;
 
   this.sumLootPile = function(){
     var total = this.lootPile.reduce(function(runningTotal, item){
@@ -70,8 +72,9 @@ angular.module('lootsplit')
 
   this.removeCharacter = function(name){
     var charLoot = this.characters[this.slugify(name)].loot;
-    this.lootPile.push(charLoot);
+    self.lootPile = self.lootPile.concat(charLoot);
     delete this.characters[this.slugify(name)];
+    this.updateLootTotal();
   };
 
   this.sumCharacter = function(name){
@@ -113,10 +116,13 @@ angular.module('lootsplit')
       var loot = this.lootPile[i];
       if(loot.id === id) delete this.lootPile[i];
     }
+    this.updateLootTotal();
   };
 
   this.updateLootTotal = function(){
     self.lootTotal = self.sumLootPile();
+    self.updateCharacterTotals();
+    self.lootPerChar = (self.lootTotal + this.sumAllCharacters()) / Object.keys(self.characters).length;
   };
 
   this.updateCharacterTotals = function(){
@@ -127,18 +133,21 @@ angular.module('lootsplit')
   };
 
 })
-.service('NavService', function($rootScope){
+.service('NavService', function($rootScope, $location){
   var self = this;
   this.routes = [
-    {path: 'characters', name: 'Characters', active: false},
-    {path: 'loot', name: 'Loot', active: false},
-    {path: 'split', name: 'Split', active: false},
-    {path: 'share', name: 'Share', active: false},
+    {path: '/characters', name: 'Add Characters', active: false},
+    {path: '/loot', name: 'Add Loot', active: false},
+    {path: '/split', name: 'Split Loot', active: false},
+    {path: '/share', name: 'Share Results', active: false},
   ];
 
   $rootScope.$on('$locationChangeSuccess', function(e, newUrl){
-    self.routes.forEach(function(route){
-      if(newUrl.indexOf(route) !== -1) route.active = true;
+    _.forEach(self.routes, function(route){
+      route.active = false;
     });
+    var path = $location.path();
+    var route = _.find(self.routes, {path: path});
+    route.active = true;
   });
 });

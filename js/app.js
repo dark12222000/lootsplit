@@ -49,6 +49,7 @@ angular.module('lootsplit', ['ngRoute', angularDragula(angular)]).config(functio
     if(coins.gp) coinsStr += coins.gp + 'gp ';
     if(coins.sp) coinsStr += coins.sp + 'sp ';
     if(coins.cp) coinsStr += coins.cp + 'cp ';
+    if(coinsStr.length < 1) coinsStr = '0';
     return coinsStr;
   };
 });

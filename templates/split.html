@@ -3,23 +3,21 @@
     <button type="button" class="btn btn-default" ng-click="autoSplit()">Auto Split</button>
     <button type="button" class="btn btn-default" ng-click="debug()">Debug</button>
     <b>Total {{ LootService.lootTotal | coins }}</b>
-    <ul class="list-group can-drop" dragula='"loot"' dragula-model="LootService.lootPile">
-      <i>Loot Pile</i>
+    <ul class="list-group can-drop" dragula="'loot'" dragula-model="LootService.lootPile" style="min-height: 40vh">
       <li ng-repeat="lootItem in LootService.lootPile" class="list-group-item">{{lootItem.name}}<b class="pull-right">{{lootItem.value}}</b></li>
-
     </ul>
   </div>
   <div class="col-md-8" id="characters">
 
-    <div ng-repeat="character in characters" class="panel panel-default col-md-4 character">
-      <b>Total {{ LootService.characterTotals[LootService.slugify(character.name)] }}</b>
+    <div ng-repeat="char in LootService.characters" class="panel panel-default col-md-4 character">
+      <b>Total {{ LootService.characterTotals[LootService.slugify(char.name)] }}</b>
+      <span> Difference {{LootService.characterTotals[LootService.slugify(char.name)] - LootService.lootPerChar}}</span>
       <div class="panel-heading">
-        <h3 class="panel-title">{{character.name}}</h3>
+        <h3 class="panel-title">{{char.name}}</h3>
       </div>
       <div class="panel-body">
-        <ul class="list-group can-drop loot-pile" dragula='"loot"' dragula-scope="$parent" dragula-model="character.loot">
-          <i>Character Loot</i>
-          <li ng-repeat="lootItem in character.loot" class="list-group-item">{{lootItem.name}}<b class="pull-right">{{lootItem.value}}</b></li>
+        <ul class="list-group can-drop loot-pile" dragula="'loot'" dragula-scope="$parent" dragula-model="char.loot">
+          <li ng-repeat="lootItem in char.loot" class="list-group-item">{{lootItem.name}}<b class="pull-right">{{lootItem.value}}</b></li>
         </ul>
       </div>
     </div>

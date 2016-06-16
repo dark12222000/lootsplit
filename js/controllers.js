@@ -6,6 +6,8 @@ angular.module('lootsplit')
   $scope.activeCharacter = {name: '', player: '', notes: '', loot:[]};
   $scope.editing = false;
 
+  LootService.updateLootTotal();
+
   $scope.characterFormSubmit = function(){
     if($scope.editing) return $scope.updateCharacter();
     return $scope.addCharacter();
@@ -36,9 +38,17 @@ angular.module('lootsplit')
   };
   $scope.characters = LootService.characters;
 })
-.controller('LootController', function($scope, LootService, coinsFilter){
-  $scope.activeLootItem = {base: null, name: '', details: '', notes: '', value: 0, quantity: 1, id: null};
+.controller('LootController', function($scope, LootService, coinsFilter, CashService){
+  $scope.activeLootItem = {base: null, name: '', details: '', notes: '', value: 0, coins: {}, quantity: 1, id: null};
+  $scope.$watch('activeLootItem.coins', function(){
+    $scope.activeLootItem.value = CashService.coinsToDecimal($scope.activeLootItem.coins);
+  }, true);
+  $scope.$watch('activeLootItem.value', function(){
+    $scope.activeLootItem.coins = CashService.decimalToCoins($scope.activeLootItem.value);
+  });
   $scope.editing = false;
+
+  LootService.updateLootTotal();
 
   $scope.lootItemFormSubmit = function(){
     if($scope.editing) return $scope.updateLootItem();
@@ -47,6 +57,7 @@ angular.module('lootsplit')
 
   $scope.selectLootItem = function(id){
     $scope.activeLootItem = LootService.getLootItem(id);
+    if(!$scope.activeLootItem.coins) $scope.activeLootItem.coins = CashService.decimalToCoins($scope.activeLootItem.value);
     $scope.editing = true;
   };
 
@@ -55,6 +66,7 @@ angular.module('lootsplit')
     for(var i = 0; i < total; i++){
       var newItem = _.clone($scope.activeLootItem);
       newItem.quantity = 1;
+      if(newItem.coins) newItem.value = CashService.coinsToDecimal(newItem.coins);
       newItem.id = _.uniqueId(_.snakeCase(newItem.name));
       $scope.loot.push(newItem);
     }
@@ -80,15 +92,15 @@ angular.module('lootsplit')
   $scope.LootService = LootService;
 })
 .controller('SplitController', function($scope, LootService, dragulaService, coinsFilter){
-  $scope.characters = LootService.characters;
-  $scope.lootPile = LootService.lootPile;
   $scope.LootService = LootService;
+  $scope.LootService.updateLootTotal();
+
   $scope.debug = function(){
     console.log(LootService);
   };
+
   $scope.$on('loot.drop-model', function(){
     LootService.updateLootTotal();
-    LootService.updateCharacterTotals();
   });
 
   $scope.autoSplit = function(){
@@ -99,20 +111,21 @@ angular.module('lootsplit')
 
     LootService.lootPile = _.orderBy(LootService.lootPile, ['value'], ['asc']);
     LootService.updateCharacterTotals();
-    for(var i = 0; i < chars.length; i++){
-      var slug = chars[i];
-      while( ( LootService.characterTotals[slug] < perChar ) && LootService.lootPile.length > 0){
-        //distribute loot
-        var item = LootService.lootPile.pop();
-        if(!$scope.$parent.$$phase) $scope.$parent.apply();
-        LootService.characters[slug].loot.push(item);
-        LootService.updateCharacterTotals();
+
+    while(LootService.lootPile.length > 0){
+      for(var i = 0; i < chars.length; i++){
+        var slug = chars[i];
+        if( ( LootService.characterTotals[slug] < perChar ) && LootService.lootPile.length > 0){
+          //distribute loot
+          var item = LootService.lootPile.pop();
+          if(!$scope.$parent.$$phase) $scope.$parent.apply();
+          LootService.characters[slug].loot.push(item);
+          LootService.updateCharacterTotals();
+        }
       }
     }
 
-    LootService.updateCharacterTotals();
     LootService.updateLootTotal();
-
   };
 
 })

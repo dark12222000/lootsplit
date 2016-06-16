@@ -7,29 +7,50 @@
   </div>
   <div class="col-md-8">
     <form ng-submit="lootItemFormSubmit()">
-      <div class="form-group">
-        <label for="lootItemName">Name</label>
-        <input type="text" class="form-control" name="lootItemName" placeholder="LootItem Name" ng-model="activeLootItem.name" id="lootItemName" required>
+      <div class="form-horizontal">
+        <div class="col-md-8">
+          <div class="form-group">
+            <label for="lootItemName">Name</label>
+            <input type="text" class="form-control" name="lootItemName" placeholder="Item Name" ng-model="activeLootItem.name" id="lootItemName" required>
+          </div>
+        </div>
+        <div class="col-md-2 col-md-offset-2">
+          <div class="form-group">
+            <label for="lootItemQuantity">Quantity</label>
+            <input type="number" class="form-control" name="lootItemQuantity" placeholder="Item Quantity" ng-model="activeLootItem.quantity" id="lootItemQuantity" required>
+          </div>
+        </div>
       </div>
-      <div class="form-group">
-        <label for="lootItemQuantity">Quantity</label>
-        <input type="number" class="form-control" name="lootItemQuality" placeholder="LootItem Quality" ng-model="activeLootItem.quantity" id="lootItemQuantity" required>
-      </div>
-      <div class="form-group">
-        <label for="lootItemValue">Value</label>
-        <input type="number" class="form-control" name="lootItemValue" placeholder="LootItem Value" ng-model="activeLootItem.value" id="lootItemValue" required>
+      <div class="form-group form-inline">
+        <!--<input type="number" class="form-control" name="pp" placeholder="pp" ng-model="activeLootItem.coins.pp" id="pp">-->
+        <div class="input-group coinage">
+          <input type="number" class="form-control" name="gp" placeholder="gp" ng-model="activeLootItem.coins.gp" id="gp">
+          <div class="input-group-addon">GP</div>
+        </div>
+        <div class="input-group coinage">
+          <input type="number" class="form-control" name="sp" placeholder="sp" ng-model="activeLootItem.coins.sp" id="sp">
+          <div class="input-group-addon">SP</div>
+        </div>
+        <div class="input-group coinage">
+          <input type="number" class="form-control" name="cp" placeholder="cp" ng-model="activeLootItem.coins.cp" id="cp">
+          <div class="input-group-addon">CP</div>
+        </div>
+        <div class="input-group" ng-hide="true">
+          <label for="lootItemValue">Decimal Value</label>
+          <input type="number" class="form-control" name="lootItemValue" placeholder="Decimal Value" ng-model="activeLootItem.value" id="lootItemValue" required>
+        </div>
       </div>
       <div class="form-group">
         <label for="lootItemDetail">Details</label>
-        <input type="text" class="form-control" name="lootItemDetail" placeholder="LootItem Detail" ng-model="activeLootItem.detail" id="lootItemDetail">
+        <input type="text" class="form-control" name="lootItemDetail" placeholder="Details" ng-model="activeLootItem.detail" id="lootItemDetail">
       </div>
       <div class="form-group">
         <label for="notes">Notes</label>
         <textarea class="form-control" name="notes" placeholder="Notes" ng-model="activeLootItem.notes" id="notes"></textarea>
       </div>
-      <button ng-show="editing" type="button" ng-click="removeLootItem()" class="btn btn-default pull-left">Remove</button>
-      <button ng-hide="editing" type="submit" class="btn btn-default pull-right">Add</button>
-      <button ng-show="editing" type="submit" class="btn btn-default pull-right">Update</button>
+      <button ng-show="editing" type="button" ng-click="removeLootItem()" class="btn btn-danger pull-left"><span class="glyphicon glyphicon-remove"></span></button>
+      <button ng-hide="editing" type="submit" class="btn btn-primary pull-right">Add <span class="glyphicon glyphicon-plus"></span></button>
+      <button ng-show="editing" type="submit" class="btn btn-primary pull-right">Update <span class="glyphicon glyphicon-ok"></span></button>
     </form>
   </div>
 </div>
