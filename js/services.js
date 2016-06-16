@@ -147,6 +147,18 @@ angular.module('lootsplit')
     this.updateLootTotal();
   };
 
+  this.clumpInventory = function(inventory){
+    var newInv = [];
+    var inv = _.forEach(inventory, function(item){
+      var matches = _.filter(inventory, {name: item.name, value: item.value});
+      item.quantity = matches.length;
+      if(item.quantity) newInv.push(item);
+      inventory = _.reject(inventory, {name: item.name, value: item.value});
+    });
+
+    return _.orderBy(newInv, ['value', 'name'], {name: 'asc', value: 'desc'});
+  };
+
 })
 .service('NavService', function($rootScope, $location){
   var self = this;

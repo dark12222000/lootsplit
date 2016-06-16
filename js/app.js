@@ -1,4 +1,4 @@
-angular.module('lootsplit', ['ngRoute', angularDragula(angular)]).config(function($routeProvider, $locationProvider){
+angular.module('lootsplit', ['ngRoute', angularDragula(angular), 'AngularPrint']).config(function($routeProvider, $locationProvider){
   $routeProvider
   .when('/characters', {
     templateUrl: 'templates/characters.html',

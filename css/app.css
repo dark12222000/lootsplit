@@ -8,3 +8,9 @@
 .coinage > .form-control {
   width: 80px !important;
 }
+
+@media print {
+    footer {
+      page-break-after: always;
+    }
+}

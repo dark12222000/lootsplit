@@ -78,7 +78,7 @@ angular.module('lootsplit')
   };
 
   function resetActiveLootItem(){
-    $scope.activeLootItem = {base: null, name: '', details: '', notes: '', value: 0, quantity: 1, id: null};
+    $scope.activeLootItem = {base: null, name: '', details: '', notes: '', value: 0, coins: {}, quantity: 1, id: null};
     $scope.editing = false;
     LootService.updateLootTotal();
   }
@@ -129,6 +129,36 @@ angular.module('lootsplit')
   };
 
 })
-.controller('ShareController', function($scope){
+.controller('ShareController', function($scope, LootService){
+  $scope.LootService = LootService;
+
+  $scope.characters = null;
+  $scope.lootPile = null;
+
+  $scope.prepareExport = function(){
+    $scope.characters = _.cloneDeep(LootService.characters);
+    $scope.lootPile = LootService.clumpInventory(_.cloneDeep(LootService.lootPile));
+
+    _.forEach($scope.characters, function(char){
+      char.loot = LootService.clumpInventory(char.loot);
+      console.log(char.loot);
+    });
+
+  };
+
+  $scope.print = function(){
+    $scope.prepareExport();
+    window.print();
+  };
+
+  $scope.exportToCSV = function(){
+    $scope.prepareExport();
+  };
+
+  $scope.exportToJSON = function(){
+    $scope.prepareExport();
+  };
+
+  $scope.prepareExport();
 
 });

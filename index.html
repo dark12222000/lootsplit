@@ -7,19 +7,20 @@
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
   <link rel="stylesheet" href="bower_components/angular-dragula/dist/dragula.min.css">
+  <link rel="stylesheet" href="bower_components/angularPrint/angularPrint.css">
   <link rel="stylesheet" href="css/sandstone.bootstrap.min.css">
   <link rel="stylesheet" href="css/font-awesome.min.css">
   <link rel="stylesheet" href="css/app.css">
 </head>
 <body ng-controller="AppController as App" ng-cloak>
   <div class="container">
-    <h1>Loot Split</h1>
-    <ul class="nav">
+    <h1 print-remove>Loot Split</h1>
+    <ul class="nav" print-remove>
       <li ng-repeat="route in App.routes" role="presentation" class="pull-left" ng-class="{'active': route.active}"><a ng-href="/#{{route.path}}">{{route.name}}<span ng-if="!$last" class="glyphicon glyphicon-chevron-right"></span></a></li>
     </ul>
-    <hr class="hr">
+    <hr class="hr" print-remove>
     <div class="" ng-view></div>
-    <hr class="hr">
+    <hr class="hr" print-remove>
   </div>
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="bower_components/lodash/dist/lodash.min.js"></script>
@@ -27,6 +28,7 @@
 <script src="bower_components/angular/angular.min.js"></script>
 <script src="bower_components/angular-route/angular-route.min.js"></script>
 <script src="bower_components/angular-dragula/dist/angular-dragula.js"></script>
+<script src="bower_components/angularPrint/angularPrint.js"></script>
 <script src="js/app.js"></script>
 <script src="js/services.js"></script>
 <script src="js/baseItems.js"></script>
