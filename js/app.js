@@ -52,4 +52,12 @@ angular.module('lootsplit', ['ngRoute', angularDragula(angular), 'AngularPrint']
     if(coinsStr.length < 1) coinsStr = '0';
     return coinsStr;
   };
+}).filter('subtotal', function(){
+  return function(items, index){
+    var subtotal = 0;
+    for (var i = 0; i <= index; i++) {
+      subtotal += ( items[i].value * items[i].quantity );
+    }
+    return subtotal || ( items[index].value * items[index].quantity );
+  };
 });

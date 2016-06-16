@@ -1,6 +1,9 @@
 angular.module('lootsplit')
 .controller('AppController', function AppController(NavService){
   this.routes = NavService.routes;
+  this.NavService = NavService;
+
+  NavService.findActiveLink();
 })
 .controller('CharactersController', function($scope, LootService){
   $scope.activeCharacter = {name: '', player: '', notes: '', loot:[]};
@@ -141,9 +144,7 @@ angular.module('lootsplit')
 
     _.forEach($scope.characters, function(char){
       char.loot = LootService.clumpInventory(char.loot);
-      console.log(char.loot);
     });
-
   };
 
   $scope.print = function(){

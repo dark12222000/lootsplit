@@ -169,16 +169,14 @@ angular.module('lootsplit')
     {path: '/share', name: 'Share Results', active: false},
   ];
 
-  function findActiveLink(){
+  this.findActiveLink = function(){
     _.forEach(self.routes, function(route){
       route.active = false;
     });
     var path = $location.path();
     var route = _.find(self.routes, {path: path});
     route.active = true;
-  }
+  };
 
-  $rootScope.$on('$locationChangeSuccess', findActiveLink);
-
-  findActiveLink();
+  $rootScope.$on('$locationChangeSuccess', this.findActiveLink);
 });
