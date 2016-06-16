@@ -52,6 +52,8 @@ angular.module('lootsplit')
 
   this.lootTotal = 0;
   this.characterTotals = {};
+  this.characterDifferences = {};
+  this.avgCharacterDifference = 0;
 
   this.lootPerChar = 0;
 
@@ -121,15 +123,28 @@ angular.module('lootsplit')
 
   this.updateLootTotal = function(){
     self.lootTotal = self.sumLootPile();
-    self.updateCharacterTotals();
     self.lootPerChar = (self.lootTotal + this.sumAllCharacters()) / Object.keys(self.characters).length;
+    self.updateCharacterTotals();
   };
 
   this.updateCharacterTotals = function(){
+    var avgDiff = 0;
     for(var char in self.characters){
       var character = self.characters[char];
       self.characterTotals[char] = self.sumCharacter(char);
+      self.characterDifferences[char] = self.lootPerChar - self.characterTotals[char];
+      avgDiff += self.characterDifferences[char];
     }
+    self.averageCharacterDifference = (( avgDiff / Object.keys(self.characters).length ) / self.lootTotal).toFixed(2);
+  };
+
+  this.resetLootItems = function(){
+    for(var slug in self.characters){
+      var char = self.characters[slug];
+      self.lootPile = self.lootPile.concat(char.loot);
+      char.loot.splice(0, char.loot.length);
+    }
+    this.updateLootTotal();
   };
 
 })
@@ -142,12 +157,16 @@ angular.module('lootsplit')
     {path: '/share', name: 'Share Results', active: false},
   ];
 
-  $rootScope.$on('$locationChangeSuccess', function(e, newUrl){
+  function findActiveLink(){
     _.forEach(self.routes, function(route){
       route.active = false;
     });
     var path = $location.path();
     var route = _.find(self.routes, {path: path});
     route.active = true;
-  });
+  }
+
+  $rootScope.$on('$locationChangeSuccess', findActiveLink);
+
+  findActiveLink();
 });

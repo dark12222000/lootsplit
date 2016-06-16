@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-md-4">
     <ul class="list-group">
-      <li ng-click="selectCharacter(character.name)" ng-repeat="character in characters" ng-class="{'active':(activeCharacter.name === character.name) && editing }"class="list-group-item">{{character.name}}<i ng-if="character.playerName">&nbsp;{{character.playerName}}</i></li>
+      <li ng-click="selectCharacter(character.name)" ng-repeat="character in characters" ng-class="{'active':(activeCharacter.name === character.name) && editing }"class="list-group-item">{{character.name}}<i class="pull-right" ng-if="character.player">&nbsp;{{character.player}}</i></li>
     </ul>
   </div>
   <div class="col-md-8">
@@ -25,8 +25,8 @@
         <textarea class="form-control" name="notes" placeholder="Notes" ng-model="activeCharacter.notes" id="notes"></textarea>
       </div>
       <button ng-show="editing" type="button" ng-click="removeCharacter()" class="btn btn-danger pull-left"><span class="glyphicon glyphicon-remove"></span></button>
-      <button ng-hide="editing" type="submit" class="btn btn-primary pull-right">Add <span class="glyphicon glyphicon-plus"></span></button>
-      <button ng-show="editing" type="submit" class="btn btn-primary pull-right">Update <span class="glyphicon glyphicon-ok"></span></button>
+      <button ng-hide="editing" type="submit" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-plus"></span>&nbsp;Add</button>
+      <button ng-show="editing" type="submit" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-ok"></span>&nbsp;Update</button>
     </form>
   </div>
 </div>

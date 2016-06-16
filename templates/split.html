@@ -1,23 +1,23 @@
 <div class="row">
   <div class="col-md-4" id="lootPile">
-    <button type="button" class="btn btn-default" ng-click="autoSplit()">Auto Split</button>
-    <button type="button" class="btn btn-default" ng-click="debug()">Debug</button>
+    <button type="button" class="btn btn-warning" ng-click="LootService.resetLootItems();"><span class="glyphicon glyphicon-remove-sign"></span></button>
     <b>Total {{ LootService.lootTotal | coins }}</b>
+    <button type="button" class="btn btn-info pull-right" ng-click="autoSplit()"><span class="glyphicon glyphicon-grain"></span>&nbsp;Auto Split</button>
+    <!--<button type="button" class="btn btn-default" ng-click="debug()">Debug</button>-->
     <ul class="list-group can-drop" dragula="'loot'" dragula-model="LootService.lootPile" style="min-height: 40vh">
-      <li ng-repeat="lootItem in LootService.lootPile" class="list-group-item">{{lootItem.name}}<b class="pull-right">{{lootItem.value}}</b></li>
+      <li ng-repeat="lootItem in LootService.lootPile" class="list-group-item"><span class="fa fa-bars"></span>&nbsp;{{lootItem.name}}<b class="pull-right">{{lootItem.value}}</b></li>
     </ul>
   </div>
   <div class="col-md-8" id="characters">
 
     <div ng-repeat="char in LootService.characters" class="panel panel-default col-md-4 character">
-      <b>Total {{ LootService.characterTotals[LootService.slugify(char.name)] }}</b>
-      <span> Difference {{LootService.characterTotals[LootService.slugify(char.name)] - LootService.lootPerChar}}</span>
-      <div class="panel-heading">
-        <h3 class="panel-title">{{char.name}}</h3>
-      </div>
+      <h2>{{char.name}}</h2>
+      <b>Total {{ LootService.characterTotals[LootService.slugify(char.name)] | coins }}</b>
+      <span class="pull-right"> Diff {{ LootService.characterDifferences[LootService.slugify(char.name)] | coins}}</span>
+
       <div class="panel-body">
         <ul class="list-group can-drop loot-pile" dragula="'loot'" dragula-scope="$parent" dragula-model="char.loot">
-          <li ng-repeat="lootItem in char.loot" class="list-group-item">{{lootItem.name}}<b class="pull-right">{{lootItem.value}}</b></li>
+          <li ng-repeat="lootItem in char.loot" class="list-group-item"><span class="fa fa-bars"></span>&nbsp;{{lootItem.name}}<b class="pull-right">{{lootItem.value}}</b></li>
         </ul>
       </div>
     </div>
