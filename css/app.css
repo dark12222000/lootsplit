@@ -9,6 +9,14 @@
   width: 80px !important;
 }
 
+.stepLink {
+  font-size: 18px;
+}
+
+.stepLink.active {
+  font-weight: bold;
+}
+
 @media print {
     footer {
       page-break-after: always;

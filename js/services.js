@@ -47,8 +47,8 @@ angular.module('lootsplit')
 .service('LootService', function($rootScope){
   var self = this;
 
-  this.lootPile = [{name: 'Gem', value: 50, id:'gem_01'}];
-  this.characters = {'bob': {name: 'Bob', loot: []}};
+  this.lootPile = [];
+  this.characters = {};
 
   this.lootTotal = 0;
   this.characterTotals = {};
@@ -160,13 +160,13 @@ angular.module('lootsplit')
   };
 
 })
-.service('NavService', function($rootScope, $location){
+.service('NavService', function($rootScope, $location, LootService){
   var self = this;
   this.routes = [
-    {path: '/characters', name: 'Add Characters', active: false},
-    {path: '/loot', name: 'Add Loot', active: false},
-    {path: '/split', name: 'Split Loot', active: false},
-    {path: '/share', name: 'Share Results', active: false},
+    {path: '/characters', name: 'Add Characters', active: false, isDisabled: function(){ return false; }},
+    {path: '/loot', name: 'Add Loot', active: false, isDisabled: function(){ return Object.keys(LootService.characters).length === 0; }},
+    {path: '/split', name: 'Split Loot', active: false, isDisabled: function(){ return LootService.lootPerChar === 0 || isNaN(LootService.lootPerChar); }},
+    {path: '/share', name: 'Share Results', active: false, isDisabled: function(){ return LootService.avgCharacterDifference === 0 && LootService.lootPerChar === 0; }},
   ];
 
   this.findActiveLink = function(){
@@ -175,7 +175,9 @@ angular.module('lootsplit')
     });
     var path = $location.path();
     var route = _.find(self.routes, {path: path});
-    route.active = true;
+
+    if(route) route.active = true;
+    if(route && route.isDisabled && route.isDisabled()) $location.path('/characters');
   };
 
   $rootScope.$on('$locationChangeSuccess', this.findActiveLink);
