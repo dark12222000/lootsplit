@@ -2,26 +2,27 @@
   <div class="col-md-4">
     <b>Total {{ LootService.lootTotal | coins }}</b>
     <ul class="list-group">
-      <li ng-click="selectLootItem(lootItem.id)" ng-repeat="lootItem in LootService.lootPile" ng-class="{'active':(activeLootItem.id === lootItem.id) && editing }"class="list-group-item">{{lootItem.name}}<b class="pull-right">{{lootItem.value}}</b></li>
+      <li ng-click="selectLootItem(lootItem.id)" ng-repeat="lootItem in LootService.lootPile" ng-class="{'active':(activeLootItem.id === lootItem.id) && editing }"class="list-group-item">{{lootItem.name}}<b class="pull-right">{{lootItem.value | coins}}</b></li>
     </ul>
   </div>
   <div class="col-md-8">
-    <form ng-submit="lootItemFormSubmit()">
+    <div class="alert alert-warning" ng-show="error">{{error}}</div>
+    <form name="lootForm" ng-submit="canSubmit() && lootItemFormSubmit()">
       <div class="form-horizontal">
         <div class="col-md-8">
-          <div class="form-group">
+          <div class="form-group" ng-class="{'has-error':lootForm.lootItemName.$touched && lootForm.lootItemName.$invalid}">
             <label for="lootItemName">Name</label>
             <input type="text" class="form-control" name="lootItemName" placeholder="Item Name" ng-model="activeLootItem.name" id="lootItemName" required>
           </div>
         </div>
         <div class="col-md-2 col-md-offset-2">
-          <div class="form-group">
+          <div class="form-group" ng-class="{'has-error':lootForm.lootItemQuantity.$touched && lootForm.lootItemQuantity.$invalid}">
             <label for="lootItemQuantity">Quantity</label>
-            <input type="number" class="form-control" name="lootItemQuantity" placeholder="Item Quantity" ng-model="activeLootItem.quantity" id="lootItemQuantity" required>
+            <input type="number" min="1" max="99" class="form-control" name="lootItemQuantity" placeholder="Item Quantity" ng-model="activeLootItem.quantity" id="lootItemQuantity" required>
           </div>
         </div>
       </div>
-      <div class="form-group form-inline">
+      <div class="form-group form-inline" ng-class="{'has-error': lootForm.hasNoValue}">
         <!--<input type="number" class="form-control" name="pp" placeholder="pp" ng-model="activeLootItem.coins.pp" id="pp">-->
         <div class="input-group coinage">
           <input type="number" class="form-control" name="gp" placeholder="gp" ng-model="activeLootItem.coins.gp" id="gp">
@@ -35,10 +36,11 @@
           <input type="number" class="form-control" name="cp" placeholder="cp" ng-model="activeLootItem.coins.cp" id="cp">
           <div class="input-group-addon">CP</div>
         </div>
-        <div class="input-group" ng-hide="true">
+        <span class="help-block" ng-show="lootForm.hasNoValue">Please give your item a value</span>
+        <!--<div class="input-group" ng-hide="true">
           <label for="lootItemValue">Decimal Value</label>
-          <input type="number" class="form-control" name="lootItemValue" placeholder="Decimal Value" ng-model="activeLootItem.value" id="lootItemValue" required>
-        </div>
+          <input type="number" class="form-control" name="lootItemValue" placeholder="Decimal Value" ng-model="activeLootItem.value" id="lootItemValue">
+        </div>-->
       </div>
       <div class="form-group">
         <label for="lootItemDetail">Details</label>

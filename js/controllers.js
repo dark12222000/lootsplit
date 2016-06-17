@@ -53,7 +53,15 @@ angular.module('lootsplit')
 
   LootService.updateLootTotal();
 
-  $scope.lootItemFormSubmit = function(){
+  $scope.canSubmit = function(){
+    if($scope.activeLootItem.value === 0){
+      $scope.lootForm.hasNoValue = true;
+      return false;
+    }
+    return true;
+  };
+
+  $scope.lootItemFormSubmit = function(e){
     if($scope.editing) return $scope.updateLootItem();
     return $scope.addLootItem();
   };
@@ -81,6 +89,9 @@ angular.module('lootsplit')
   };
 
   function resetActiveLootItem(){
+    $scope.lootForm.$setPristine();
+    $scope.lootForm.$setUntouched();
+    $scope.lootForm.hasNoValue = false;
     $scope.activeLootItem = {base: null, name: '', details: '', notes: '', value: 0, coins: {}, quantity: 1, id: null};
     $scope.editing = false;
     LootService.updateLootTotal();
