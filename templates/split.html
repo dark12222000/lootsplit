@@ -1,25 +1,26 @@
 <div class="row">
-  <div class="col-md-4" id="lootPile">
-    <button type="button" class="btn btn-warning" ng-click="LootService.resetLootItems();"><span class="glyphicon glyphicon-remove-sign"></span></button>
-    <b>Total {{ LootService.lootTotal | coins }}</b>
-    <button type="button" class="btn btn-default pull-right" ng-click="showHelp()"><span class="fa fa-question-circle"></span></button>
-    <button type="button" class="btn btn-info pull-right" ng-click="autoSplit()"><span class="glyphicon glyphicon-grain"></span>&nbsp;Auto Split</button>
+  <div class="col-xs-4" id="lootPile">
+    <button type="button" class="btn btn-warning" ng-click="LootService.resetLootItems();" data-toggle="tooltip" title="Bring all loot back to pile"><span class="glyphicon glyphicon-remove-sign"></span></button>
+    <b>&nbsp;Total {{ LootService.lootTotal | coins }}</b>
+    <i>&nbsp;Avg Diff {{ LootService.avgCharacterDifference | coins }}</i>
+    <button type="button" class="btn btn-default pull-right" ng-click="showHelp()" data-toggle="tooltip" title="Help"  data-placement="right"><span class="fa fa-question-circle"></span></button>
+    <button type="button" class="btn btn-info pull-right" ng-click="autoSplit()" data-toggle="tooltip" title="Distribute remaining loot evenly"><span class="glyphicon glyphicon-grain"></span>&nbsp;Auto Split</button>
     <!--<button type="button" class="btn btn-default" ng-click="debug()">Debug</button>-->
     <hr>
     <ul class="list-group can-drop" dragula="'loot'" dragula-model="LootService.lootPile" style="min-height: 40vh">
-      <li ng-repeat="lootItem in LootService.lootPile" class="list-group-item"><span class="fa fa-bars"></span>&nbsp;{{lootItem.name}}<b class="pull-right">{{lootItem.value}}</b></li>
+      <li ng-repeat="lootItem in LootService.lootPile" class="list-group-item"><span class="fa fa-bars"></span>&nbsp;{{lootItem.name}}<b class="pull-right">{{lootItem.value | coins}}</b></li>
     </ul>
   </div>
-  <div class="col-md-8" id="characters">
+  <div class="col-xs-8" id="characters">
 
     <div ng-repeat="char in LootService.characters" class="panel panel-default col-md-4 character">
       <h2>{{char.name}}</h2>
-      <b>Total {{ LootService.characterTotals[LootService.slugify(char.name)] | coins }}</b>
-      <span class="pull-right"> Diff {{ LootService.characterDifferences[LootService.slugify(char.name)] | coins}}</span>
+      <b>&nbsp;Total {{ LootService.characterTotals[LootService.slugify(char.name)] | coins }}</b>
+      <span class="pull-right" ng-class="{'notEnoughValue': char.diff > LootService.avgCharacterDifference}"> Diff {{ char.diff | coins}}</span>
 
       <div class="panel-body">
         <ul class="list-group can-drop loot-pile" dragula="'loot'" dragula-scope="$parent" dragula-model="char.loot">
-          <li ng-repeat="lootItem in char.loot" class="list-group-item"><span class="fa fa-bars"></span>&nbsp;{{lootItem.name}}<b class="pull-right">{{lootItem.value}}</b></li>
+          <li ng-repeat="lootItem in char.loot" class="list-group-item"><span class="fa fa-bars"></span>&nbsp;{{lootItem.name}}<b class="pull-right">{{lootItem.value | coins}}</b></li>
         </ul>
       </div>
     </div>

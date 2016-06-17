@@ -1,9 +1,12 @@
 angular.module('lootsplit')
-.controller('AppController', function AppController(NavService){
+.controller('AppController', function AppController(NavService, $scope){
   this.routes = NavService.routes;
   this.NavService = NavService;
 
   NavService.findActiveLink();
+  $scope.$on('$viewContentLoaded', function(){
+    $('[data-toggle="tooltip"]').tooltip();
+  });
 })
 .controller('CharactersController', function($scope, LootService){
   $scope.activeCharacter = {name: '', player: '', notes: '', loot:[]};
@@ -117,6 +120,8 @@ angular.module('lootsplit')
   $scope.LootService = LootService;
   $scope.LootService.updateLootTotal();
 
+  $scope.helpVisible = false;
+
   $scope.debug = function(){
     console.log(LootService);
   };
@@ -124,6 +129,16 @@ angular.module('lootsplit')
   $scope.$on('loot.drop-model', function(){
     LootService.updateLootTotal();
   });
+
+  $scope.showHelp = function(){
+    if(!$scope.helpVisible){
+      $scope.helpVisible = true;
+      $('[data-toggle="tooltip"]').tooltip('show');
+    }else{
+      $scope.helpVisible = false;
+      $('[data-toggle="tooltip"]').tooltip('hide');
+    }
+  };
 
   $scope.autoSplit = function(){
     var chars = _.shuffle(Object.keys(LootService.characters));

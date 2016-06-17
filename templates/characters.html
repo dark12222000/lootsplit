@@ -1,10 +1,10 @@
 <div class="row">
-  <div class="col-md-4">
+  <div class="col-xs-4">
     <ul class="list-group">
       <li ng-click="selectCharacter(character.name)" ng-repeat="character in characters" ng-class="{'active':(activeCharacter.name === character.name) && editing }"class="list-group-item">{{character.name}}<i class="pull-right" ng-if="character.player">&nbsp;{{character.player}}</i></li>
     </ul>
   </div>
-  <div class="col-md-8">
+  <div class="col-xs-8">
     <form ng-submit="characterFormSubmit()" name="characterForm">
       <div class="form-horizontal">
         <div class="col-md-5">
@@ -20,13 +20,13 @@
           </div>
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-group" data-toggle="tooltip" title="These notes will appear on the printed sheets and are good for general explanations.">
         <label for="notes">Notes</label>
         <textarea class="form-control" name="notes" placeholder="Notes" ng-model="activeCharacter.notes" id="notes"></textarea>
       </div>
-      <button ng-show="editing" type="button" ng-click="removeCharacter()" class="btn btn-danger pull-left"><span class="glyphicon glyphicon-remove"></span></button>
-      <button ng-hide="editing" type="submit" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-plus"></span>&nbsp;Add</button>
-      <button ng-show="editing" type="submit" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-ok"></span>&nbsp;Update</button>
+      <button ng-show="editing" type="button" ng-click="removeCharacter()" class="btn btn-danger pull-left" data-toggle="tooltip" title="Remove Character"><span class="glyphicon glyphicon-remove"></span></button>
+      <button ng-hide="editing" type="submit" class="btn btn-primary pull-right" data-toggle="tooltip" title="Add Character"><span class="glyphicon glyphicon-plus"></span>&nbsp;Add</button>
+      <button ng-show="editing" type="submit" class="btn btn-primary pull-right" data-toggle="tooltip" title="Update Character"><span class="glyphicon glyphicon-ok"></span>&nbsp;Update</button>
     </form>
   </div>
 </div>

@@ -9,6 +9,10 @@
   width: 80px !important;
 }
 
+.notEnoughValue {
+  color: #d9534f;
+}
+
 .stepLink {
   font-size: 18px;
 }

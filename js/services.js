@@ -133,9 +133,10 @@ angular.module('lootsplit')
       var character = self.characters[char];
       self.characterTotals[char] = self.sumCharacter(char);
       self.characterDifferences[char] = self.lootPerChar - self.characterTotals[char];
+      self.characters[char].diff = self.characterDifferences[char];
       avgDiff += self.characterDifferences[char];
     }
-    self.averageCharacterDifference = (( avgDiff / Object.keys(self.characters).length ) / self.lootTotal).toFixed(2);
+    self.avgCharacterDifference = (( avgDiff / Object.keys(self.characters).length ));
   };
 
   this.resetLootItems = function(){
@@ -180,5 +181,7 @@ angular.module('lootsplit')
     if(route && route.isDisabled && route.isDisabled()) $location.path('/characters');
   };
 
-  $rootScope.$on('$locationChangeSuccess', this.findActiveLink);
+  $rootScope.$on('$locationChangeSuccess', function(){
+    self.findActiveLink();
+  });
 });
