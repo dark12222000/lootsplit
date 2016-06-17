@@ -16,7 +16,7 @@
     <h1 print-remove>Loot Split</h1>
     <i>Early Alpha</i>
     <ul class="nav" print-remove>
-      <li ng-repeat="route in App.routes" role="presentation" class="pull-left stepLink" ng-class="{'active': route.active, 'disabled': route.isDisabled()}"><a ng-href="/#{{route.path}}">{{route.name}}<span ng-if="!$last" class="glyphicon glyphicon-chevron-right"></span></a></li>
+      <li ng-repeat="route in App.routes" role="presentation" class="pull-left stepLink" ng-class="{'active': route.active, 'disabled': route.isDisabled()}"><a ng-href="#{{route.path}}">{{route.name}}<span ng-if="!$last" class="glyphicon glyphicon-chevron-right"></span></a></li>
     </ul>
     <hr class="hr" print-remove>
     <div class="" ng-view></div>
