@@ -31,6 +31,8 @@ angular.module('lootsplit')
   };
 
   function resetActiveCharacter(){
+    $scope.characterForm.$setPristine();
+    $scope.characterForm.$setUntouched();
     $scope.activeCharacter = {name: '', player: '', notes: '', loot:[]};
     $scope.editing = false;
   }
@@ -78,13 +80,20 @@ angular.module('lootsplit')
       var newItem = _.clone($scope.activeLootItem);
       newItem.quantity = 1;
       if(newItem.coins) newItem.value = CashService.coinsToDecimal(newItem.coins);
-      newItem.id = _.uniqueId(_.snakeCase(newItem.name));
-      $scope.loot.push(newItem);
+      newItem.id = _.uniqueId(_.snakeCase(newItem.name)) + '_' + _.random(0, 100);
+      $scope.LootService.lootPile.push(newItem);
     }
     resetActiveLootItem();
   };
 
   $scope.updateLootItem = function(){
+    if($scope.activeLootItem.quantity > 1){
+      var ref = $scope.activeLootItem;
+      $scope.removeLootItem();
+      $scope.activeLootItem = ref;
+      $scope.activeLootItem.id += '_2';
+      $scope.addLootItem();
+    }
     resetActiveLootItem();
   };
 
@@ -102,7 +111,6 @@ angular.module('lootsplit')
     resetActiveLootItem();
   };
 
-  $scope.loot = LootService.lootPile;
   $scope.LootService = LootService;
 })
 .controller('SplitController', function($scope, LootService, dragulaService, coinsFilter){

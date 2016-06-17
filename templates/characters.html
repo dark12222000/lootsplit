@@ -5,11 +5,11 @@
     </ul>
   </div>
   <div class="col-md-8">
-    <form ng-submit="characterFormSubmit()">
+    <form ng-submit="characterFormSubmit()" name="characterForm">
       <div class="form-horizontal">
         <div class="col-md-5">
-          <div class="form-group">
-            <label for="characterName">Character Name</label>
+          <div class="form-group" ng-class="{'has-error': characterForm.characterName.$touched && characterForm.characterName.$invalid}">
+            <label for="characterName"><span class="glyphicon glyphicon-asterisk"></span>&nbsp;Character Name</label>
             <input type="text" class="form-control" name="characterName" placeholder="Character Name" ng-model="activeCharacter.name" id="characterName" required>
           </div>
         </div>

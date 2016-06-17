@@ -116,7 +116,7 @@ angular.module('lootsplit')
   this.removeLootItem = function(id){
     for(var i = 0; i < this.lootPile.length; i++){
       var loot = this.lootPile[i];
-      if(loot.id === id) delete this.lootPile[i];
+      if(loot.id === id) this.lootPile.splice(i, 1);
     }
     this.updateLootTotal();
   };

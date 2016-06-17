@@ -2,6 +2,7 @@
   <div class="col-md-4" id="lootPile">
     <button type="button" class="btn btn-warning" ng-click="LootService.resetLootItems();"><span class="glyphicon glyphicon-remove-sign"></span></button>
     <b>Total {{ LootService.lootTotal | coins }}</b>
+    <button type="button" class="btn btn-default pull-right" ng-click="showHelp()"><span class="fa fa-question-circle"></span></button>
     <button type="button" class="btn btn-info pull-right" ng-click="autoSplit()"><span class="glyphicon glyphicon-grain"></span>&nbsp;Auto Split</button>
     <!--<button type="button" class="btn btn-default" ng-click="debug()">Debug</button>-->
     <hr>

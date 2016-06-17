@@ -2,7 +2,7 @@
   <div class="col-md-4">
     <b>Total {{ LootService.lootTotal | coins }}</b>
     <ul class="list-group">
-      <li ng-click="selectLootItem(lootItem.id)" ng-repeat="lootItem in LootService.lootPile" ng-class="{'active':(activeLootItem.id === lootItem.id) && editing }"class="list-group-item">{{lootItem.name}}<b class="pull-right">{{lootItem.value | coins}}</b></li>
+      <li ng-click="selectLootItem(lootItem.id)" ng-repeat="lootItem in LootService.lootPile track by lootItem.id" ng-class="{'active':(activeLootItem.id === lootItem.id) && editing }"class="list-group-item">{{lootItem.name}}<b class="pull-right">{{lootItem.value | coins}}</b></li>
     </ul>
   </div>
   <div class="col-md-8">
@@ -11,7 +11,7 @@
       <div class="form-horizontal">
         <div class="col-md-8">
           <div class="form-group" ng-class="{'has-error':lootForm.lootItemName.$touched && lootForm.lootItemName.$invalid}">
-            <label for="lootItemName">Name</label>
+            <label for="lootItemName"><span class="glyphicon glyphicon-asterisk"></span>&nbsp;Name</label>
             <input type="text" class="form-control" name="lootItemName" placeholder="Item Name" ng-model="activeLootItem.name" id="lootItemName" required>
           </div>
         </div>
