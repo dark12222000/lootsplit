@@ -1,6 +1,21 @@
 <div class="row">
   <div class="col-xs-4">
     <b>Total {{ LootService.lootTotal | coins }}</b>
+    <div class="form-group form-inline">
+      <!--<input type="number" class="form-control" name="pp" placeholder="pp" ng-model="activeLootItem.coins.pp" id="pp">-->
+      <div class="input-group coinage">
+        <input type="number" class="form-control" name="gp" placeholder="gp" ng-model="rawLootCoins.gp" id="gp">
+        <div class="input-group-addon">GP</div>
+      </div>
+      <div class="input-group coinage">
+        <input type="number" class="form-control" name="sp" placeholder="sp" ng-model="rawLootCoins.sp" id="sp">
+        <div class="input-group-addon">SP</div>
+      </div>
+      <div class="input-group coinage">
+        <input type="number" class="form-control" name="cp" placeholder="cp" ng-model="rawLootCoins.cp" id="cp">
+        <div class="input-group-addon">CP</div>
+      </div>
+    </div>
     <ul class="list-group">
       <li ng-click="selectLootItem(lootItem.id)" ng-repeat="lootItem in LootService.lootPile track by lootItem.id" ng-class="{'active':(activeLootItem.id === lootItem.id) && editing }"class="list-group-item">{{lootItem.name}}<b class="pull-right">{{lootItem.value | coins}}</b></li>
     </ul>

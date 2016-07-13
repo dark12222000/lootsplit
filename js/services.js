@@ -48,6 +48,7 @@ angular.module('lootsplit')
   var self = this;
 
   this.lootPile = [];
+  this.lootCoins = 0;
   this.characters = {};
 
   this.lootTotal = 0;
@@ -58,9 +59,12 @@ angular.module('lootsplit')
   this.lootPerChar = 0;
 
   this.sumLootPile = function(){
-    var total = this.lootPile.reduce(function(runningTotal, item){
+    var total = 0;
+    lootTotal = this.lootPile.reduce(function(runningTotal, item){
       return runningTotal += item.value;
     }, 0);
+    total += this.lootCoins;
+    if(lootTotal) total += lootTotal;
     return total;
   };
 
@@ -75,20 +79,26 @@ angular.module('lootsplit')
   this.removeCharacter = function(name){
     var charLoot = this.characters[this.slugify(name)].loot;
     self.lootPile = self.lootPile.concat(charLoot);
+    self.lootCoins += this.characters[this.slugify(name)].lootCoins;
     delete this.characters[this.slugify(name)];
     this.updateLootTotal();
   };
 
   this.sumCharacter = function(name){
     var char = this.getCharacter(name);
-    var charTotal = char.loot.reduce(function(runningTotal, item){
+    var charTotal = 0;
+    var charLoot = char.loot.reduce(function(runningTotal, item){
       return runningTotal += item.value;
     }, 0);
+    if(charLoot) charTotal += charLoot;
+    charTotal += char.lootCoins;
     return charTotal;
   };
 
   this.sumAllCharacters = function(){
+    var coinage = 0;
     var characterLoot = _.toArray(this.characters).reduce(function(loot, char){
+      coinage += char.lootCoins;
       return loot.concat(char.loot);
     }, []);
 
@@ -96,6 +106,11 @@ angular.module('lootsplit')
       return runningTotal += item.value;
     }, 0);
 
+    if(totalCharacterLootValue){
+      totalCharacterLootValue += coinage;
+    }else{
+      totalCharacterLootValue = coinage;
+    }
     return totalCharacterLootValue;
   };
 
@@ -119,6 +134,28 @@ angular.module('lootsplit')
       if(loot.id === id) this.lootPile.splice(i, 1);
     }
     this.updateLootTotal();
+  };
+
+  this.transferCoinsFromStash = function(amount, char){
+    if(typeof char === 'string') char = this.getCharacter(char);
+    if(this.lootCoins >= amount){
+      this.lootCoins -= amount;
+      char.lootCoins += amount;
+    }else{
+      char.lootCoins += this.lootCoins;
+      this.lootCoins = 0;
+    }
+  };
+
+  this.transferCoinsToStash = function(amount, char){
+    if(typeof char === 'string') char = this.getCharacter(char);
+    if(char.lootCoins >= amount){
+      this.lootCoins += amount;
+      char.lootCoins -= amount;
+    }else{
+      this.lootCoins += char.lootCoins;
+      char.lootCoins = 0;
+    }
   };
 
   this.updateLootTotal = function(){
@@ -166,7 +203,7 @@ angular.module('lootsplit')
   this.routes = [
     {path: '/characters', name: 'Add Characters', active: false, isDisabled: function(){ return false; }},
     {path: '/loot', name: 'Add Loot', active: false, isDisabled: function(){ return Object.keys(LootService.characters).length === 0; }},
-    {path: '/split', name: 'Split Loot', active: false, isDisabled: function(){ return LootService.lootPerChar === 0 || isNaN(LootService.lootPerChar); }},
+    {path: '/split', name: 'Split Loot', active: false, isDisabled: function(){ return false; }},
     {path: '/share', name: 'Share Results', active: false, isDisabled: function(){ return LootService.avgCharacterDifference === 0 && LootService.lootPerChar === 0; }},
   ];
 

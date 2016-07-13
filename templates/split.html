@@ -15,6 +15,7 @@
 
     <div ng-repeat="char in LootService.characters" class="panel panel-default col-md-4 character">
       <h2>{{char.name}}</h2>
+      <h4>Currency {{ char.lootCoins | coins }}</h4>
       <b>&nbsp;Total {{ LootService.characterTotals[LootService.slugify(char.name)] | coins }}</b>
       <span class="pull-right" ng-class="{'notEnoughValue': char.diff > LootService.avgCharacterDifference}"> Diff {{ char.diff | coins}}</span>
 
