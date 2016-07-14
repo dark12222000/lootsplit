@@ -46,7 +46,7 @@ angular.module('lootsplit')
 })
 .service('LootService', function($rootScope){
   var self = this;
-  var debug = true;
+  var debug = false;
 
   this.lootPile = [];
   this.lootCoins = 0;

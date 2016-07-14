@@ -160,8 +160,11 @@ angular.module('lootsplit')
 
     LootService.lootPile = _.orderBy(LootService.lootPile, ['value'], ['asc']);
     LootService.updateCharacterTotals();
-
+    var infBreak = 0;
     while(LootService.lootPile.length > 0 || LootService.lootCoins > 0){
+      infBreak++;
+      if( _.isNaN(LootService.lootPile) || _.isNaN(LootService.lootCoins) ) break;
+      if(infBreak > 10) break;
       for(var i = 0; i < chars.length; i++){
         var slug = chars[i];
         if( ( LootService.characterTotals[slug] < perChar ) && LootService.lootPile.length > 0){
