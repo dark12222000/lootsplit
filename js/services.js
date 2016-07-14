@@ -46,10 +46,33 @@ angular.module('lootsplit')
 })
 .service('LootService', function($rootScope){
   var self = this;
+  var debug = true;
 
   this.lootPile = [];
   this.lootCoins = 0;
   this.characters = {};
+
+  if(debug){
+    this.lootPile = [
+      {base: null, name: 'Sword', details: '', notes: '', value: 5, coins: {}, quantity: 1, id: "sword_01"},
+      {base: null, name: 'Gem', details: '', notes: '', value: 50, coins: {}, quantity: 1, id: "gem_01"},
+      {base: null, name: 'Potion', details: '', notes: '', value: 25.5, coins: {}, quantity: 1, id: "potion_01"},
+      {base: null, name: 'Book', details: '', notes: '', value: 125, coins: {}, quantity: 1, id: "book_01"},
+    ];
+    this.lootCoins = 513.98;
+    this.characters = {
+      "bob": {name: 'Bob', player: '', notes: '', loot:[
+        {base: null, name: 'Sword', details: '', notes: '', value: 5, coins: {}, quantity: 1, id: "sword_02"},
+        {base: null, name: 'Gem', details: '', notes: '', value: 50, coins: {}, quantity: 1, id: "gem_02"}
+      ], lootCoins: 23},
+      "sally": {name: 'Sally', player: '', notes: '', loot:[
+        {base: null, name: 'Potion', details: '', notes: '', value: 25.5, coins: {}, quantity: 1, id: "potion_02"}
+      ], lootCoins: 43.5},
+      "mae": {name: 'Mae', player: '', notes: '', loot:[
+        {base: null, name: 'Book', details: '', notes: '', value: 125, coins: {}, quantity: 1, id: "book_02"}
+      ], lootCoins: 77.62}
+    };
+  }
 
   this.lootTotal = 0;
   this.characterTotals = {};
@@ -181,6 +204,7 @@ angular.module('lootsplit')
       var char = self.characters[slug];
       self.lootPile = self.lootPile.concat(char.loot);
       char.loot.splice(0, char.loot.length);
+      self.transferToLootPile(char.lootCoins, char);
     }
     this.updateLootTotal();
   };

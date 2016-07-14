@@ -1,10 +1,28 @@
 <div class="row">
   <div class="col-xs-4" id="lootPile">
-    <button type="button" class="btn btn-warning" ng-click="LootService.resetLootItems();" data-toggle="tooltip" title="Bring all loot back to pile"><span class="glyphicon glyphicon-remove-sign"></span></button>
-    <b>&nbsp;Total {{ LootService.lootTotal | coins }}</b>
-    <i>&nbsp;Avg Diff {{ LootService.avgCharacterDifference | coins }}</i>
-    <button type="button" class="btn btn-default pull-right" ng-click="showHelp()" data-toggle="tooltip" title="Help"  data-placement="right"><span class="fa fa-question-circle"></span></button>
-    <button type="button" class="btn btn-info pull-right" ng-click="autoSplit()" data-toggle="tooltip" title="Distribute remaining loot evenly"><span class="glyphicon glyphicon-grain"></span>&nbsp;Auto Split</button>
+    <div class="row">
+      <div class="col-sm-12 center-text">
+      <p>
+        <b>&nbsp;Total {{ LootService.lootTotal | coins }}</b>
+      </p>
+      <p>
+        <i>&nbsp;Avg Diff {{ LootService.avgCharacterDifference | coins }}</i>
+      </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <button type="button" class="btn btn-info pull-right btn-block" ng-click="autoSplit()" data-toggle="tooltip" title="Distribute remaining loot evenly"><span class="glyphicon glyphicon-grain"></span>&nbsp;Auto Split</button>
+      </div>
+      <div class="col-sm-4">
+        <button type="button" class="btn btn-warning" ng-click="LootService.resetLootItems();" data-toggle="tooltip" title="Bring all loot back to pile"><span class="glyphicon glyphicon-remove-sign"></span></button>
+      </div>
+      <div class="col-sm-8">
+        <button type="button" class="btn btn-default pull-right" ng-click="showHelp()" data-toggle="tooltip" title="Help"  data-placement="right"><span class="fa fa-question-circle"></span></button>
+      </div>
+    </div>
+
+
     <!--<button type="button" class="btn btn-default" ng-click="debug()">Debug</button>-->
     <hr>
     <ul class="list-group can-drop" dragula="'loot'" dragula-model="LootService.lootPile" style="min-height: 40vh">
@@ -13,16 +31,37 @@
   </div>
   <div class="col-xs-8" id="characters">
 
-    <div ng-repeat="char in LootService.characters" class="panel panel-default col-md-4 character">
-      <h2>{{char.name}}</h2>
-      <h4>Currency {{ char.lootCoins | coins }}</h4>
-      <b>&nbsp;Total {{ LootService.characterTotals[LootService.slugify(char.name)] | coins }}</b>
-      <span class="pull-right" ng-class="{'notEnoughValue': char.diff > LootService.avgCharacterDifference}"> Diff {{ char.diff | coins}}</span>
-
+    <div ng-repeat="char in LootService.characters" class="panel panel-default col-md-6 col-lg-4 character">
+      <div class="row">
+        <div class="col-xs-12">
+          <h2>{{char.name}}</h2>
+          <h4>Currency {{ char.lootCoins | coins }}</h4>
+        </div>
+        <div class="col-xs-12 col-lg-6">
+          <span ng-class="{'notEnoughValue': char.diff > LootService.avgCharacterDifference}"> Deviation {{ char.diff | coins}}</span>
+        </div>
+      </div>
       <div class="panel-body">
-        <ul class="list-group can-drop loot-pile" dragula="'loot'" dragula-scope="$parent" dragula-model="char.loot">
-          <li ng-repeat="lootItem in char.loot" class="list-group-item"><span class="fa fa-bars"></span>&nbsp;{{lootItem.name}}<b class="pull-right">{{lootItem.value | coins}}</b></li>
-        </ul>
+        <div class="row">
+          <div class="col-xs-12">
+            <ul class="list-group can-drop loot-pile" dragula="'loot'" dragula-scope="$parent" dragula-model="char.loot">
+              <li ng-repeat="lootItem in char.loot" class="list-group-item row">
+                <div class="col-xs-7">
+                  <span class="fa fa-bars"></span>
+                  {{lootItem.name}}
+                </div>
+                <div class="col-xs-5">
+                  <b class="pull-right">{{lootItem.value | coins}}</b>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-lg-6">
+          <h4>&nbsp;Total {{ LootService.characterTotals[LootService.slugify(char.name)] | coins }}</h4>
+        </div>
       </div>
     </div>
 

@@ -187,9 +187,14 @@ angular.module('lootsplit')
 })
 .controller('ShareController', function($scope, LootService){
   $scope.LootService = LootService;
+  LootService.updateLootTotal();
 
   $scope.characters = null;
   $scope.lootPile = null;
+
+  $scope.sepPages = true;
+  $scope.indexPage = true;
+  $scope.charPages = true;
 
   $scope.prepareExport = function(){
     $scope.characters = _.cloneDeep(LootService.characters);

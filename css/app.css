@@ -5,10 +5,6 @@
   overflow-y: scroll;
 }
 
-.coinage > .form-control {
-  width: 80px !important;
-}
-
 .notEnoughValue {
   color: #d9534f;
 }
@@ -19,6 +15,16 @@
 
 .stepLink.active {
   font-weight: bold;
+}
+
+.share-option {
+  margin-left: 2em;
+}
+
+.center-text {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 @media print {
